@@ -31,21 +31,15 @@
 *.out
 *.app
 
-# Build directories
+# CMake build directories
 build/
 cmake-build-*/
 
-# IDE specific files
+# IDE files
 .vscode/
 .idea/
 *.swp
-*~
-
-# CMake generated files
-CMakeCache.txt
-CMakeFiles/
-cmake_install.cmake
-install_manifest.txt
+*.swo
 
 # macOS specific
 .DS_Store 

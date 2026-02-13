@@ -1,32 +1,38 @@
-cmake_minimum_required(VERSION 3.12)
-project(CPP_Practice VERSION 1.0.0 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.14)
+project(ArbitrageBot VERSION 0.1.0 LANGUAGES CXX)
 
-# Set C++ standard
+# Use modern C++
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Set build type if not specified
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif()
+# Set output directories
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-# Set compiler flags
-set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-
-# Add include directory
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-# Find all source files
+# Collect all source files
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 # Add the executable
-add_executable(cpp_practice ${SOURCES})
+add_executable(arbitrage_bot ${SOURCES})
 
-# Install target
-install(TARGETS cpp_practice DESTINATION bin)
+# Add include directories
+target_include_directories(arbitrage_bot
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
 
-# Print status
-message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}") 
+# Enable compiler warnings
+if(MSVC)
+    target_compile_options(arbitrage_bot PRIVATE /W4)
+else()
+    target_compile_options(arbitrage_bot PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+# Install targets
+install(TARGETS arbitrage_bot
+    RUNTIME DESTINATION bin
+) 
